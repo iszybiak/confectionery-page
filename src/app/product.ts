@@ -8,4 +8,5 @@ export interface Product{
   no_added_sugar: boolean;
   keto: boolean;
   vegan: boolean;
+  imgSrc: string;
 }
