@@ -216,10 +216,9 @@ p {
     max-height: 30px; /* Możesz dostosować tę wartość do swoich potrzeb */
   }
 }
-.main-conteiner{
+.main-container{
   margin: 5%;
 }
-
 
 .content {
   padding: 120px 0;
@@ -418,6 +417,9 @@ body{
   display: none;
   text-align: center;
   margin-top: 10px
+}
+
+.hover > a {
 }
 
 .product_item .product_details {
@@ -723,7 +725,7 @@ body{
 
 .label {
   color: #ffffff;
-  font-size: 12px;
+  font-size: 1.2rem;
   padding: 2px 4px;
   border-radius: 4px;
 }
@@ -739,5 +741,19 @@ body{
 }
 .label-keto{
   background-color: #5aeaea;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; /* Ustaw z-index na wartość większą niż nagłówek */
+}
+
+/* Styl dla nagłówka */
+.header-area {
+  position: relative; /* Ustaw pozycję na relative, aby móc nadpisać z-index */
+  z-index: 1; /* Ustaw z-index na mniejszą wartość niż modal, na przykład 1 */
 }
 

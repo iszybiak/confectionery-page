@@ -1,7 +1,7 @@
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 
-<header class="header-area overlay">
+<header class="header-area overlay" >
   <nav class="navbar navbar-expand-md navbar-dark">
     <div class="container">
       <a href="#" class="navbar-brand"><img src="../img/logo.png" alt="Niezła babka" class="img-fluid"></a>
@@ -14,15 +14,16 @@
 
       <div id="main-nav" class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
-          <li><a href="#" class="nav-item nav-link active">Oferta</a></li>
-          <li><a href="#" class="nav-item nav-link">O nas</a></li>
-          <li class="dropdown">
-            <a href="#" class="nav-item nav-link" data-toggle="dropdown">Edycja</a>
-            <div class="dropdown-menu">
-              <a href="#" class="dropdown-item">Dodaj produkt</a>
-              <a href="#" class="dropdown-item">Edytuj lub Usuń</a>
-            </div>
-          </li>
+          <li><a href="#" class="nav-item nav-link active" (click)="onOpenModal(null, 'add' )">Dodaj produkt</a></li>
+<!--          <li><a href="#" class="nav-item nav-link active">Oferta</a></li>-->
+<!--          <li><a href="#" class="nav-item nav-link">O nas</a></li>-->
+<!--          <li class="dropdown">-->
+<!--            <a href="#" class="nav-item nav-link" data-toggle="dropdown">Edycja</a>-->
+<!--            <div class="dropdown-menu">-->
+<!--              <a href="#" class="dropdown-item">Dodaj produkt</a>-->
+<!--              <a href="#" class="dropdown-item">Edytuj lub Usuń</a>-->
+<!--            </div>-->
+<!--          </li>-->
           <li><a href="#" class="nav-item nav-link"><i
             class="zmdi zmdi-shopping-cart"></i></a></li>
         </ul>
@@ -32,8 +33,7 @@
 </header>
 
 
-
-<div class="main-conteiner ">
+<div class="main-container container" id="mainContainer">
   <div class="row clearfix mt-8">
     <div class="col-lg-3 col-md-4 col-sm-12" *ngFor="let product of products">
       <div class="card product_item">
@@ -47,10 +47,10 @@
               <span class="label-tags" *ngIf="product.keto === true"><span class="label label-keto">Keto</span></span>
             </div>
             <div class="hover">
-              <a href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i
-                class="zmdi zmdi-plus"></i></a>
-              <a href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i
-                class="zmdi zmdi-shopping-cart"></i></a>
+              <a (click)="onOpenModal(product, 'edit' )" href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i
+                class="zmdi zmdi-edit"></i></a>
+              <a (click)="onOpenModal(product, 'delete' )" href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i
+                class="zmdi zmdi-delete"></i></a>
             </div>
           </div>
           <div class="product_details">
@@ -64,3 +64,69 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- Add Product -->
+<div class="modal " tabindex="-1" id="addProductModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Dodawanie produktu</h3>
+        <button type="button" class="zmdi zmdi-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+      </div>
+      <div class="modal-body">
+        <form class="form" novalidate="">
+          <div class="form-group">
+            <label>Wygląd</label>
+            <button class="btn btn-primary col" type="button">
+              <i class="fa fa-fw fa-camera"></i>
+              <span>Zdjęcie</span>
+            </button>
+          </div>
+          <div class="form-group">
+            <label>Nazwa</label>
+            <input class="form-control" type="text" name="name" placeholder="Produkt">
+          </div>
+          <div class="form-group row">
+            <div class="col">
+              <label>Cena</label>
+              <input class="form-control" type="number" name="price" step="0.01" placeholder="zł">
+            </div>
+            <div class="col">
+              <label>Dostępna ilość</label>
+              <input class="form-control" type="number" name="quantity" placeholder="szt.">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Informacje dodatkowe</label>
+            <div class="custom-controls-stacked px-2">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="is-no-added-sugar" checked="">
+                <label class="custom-control-label" for="is-no-added-sugar">Bez dodatku cukru</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="is-no-gluten" checked="">
+                <label class="custom-control-label" for="is-no-gluten">Bez glutenu</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="is-vegan" checked="">
+                <label class="custom-control-label" for="is-vegan">Vegan</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="is-keto" checked="">
+                <label class="custom-control-label" for="is-keto">Keto</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+        <button type="button" class="btn btn-primary">Zapisz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
