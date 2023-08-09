@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Product} from "./product";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ProductService} from "./product.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,13 @@ import {ProductService} from "./product.service";
 })
 export class AppComponent implements OnInit{
   public products: Product[] ;
+  isMelting: boolean = false;
+  isNoGluten: boolean = false;
+  isNoSugar: boolean = false;
+  isKeto: boolean = false;
+  isVegan: boolean = false;
+  img: String = "/img/default.jpg"
+  imgPreview: string | undefined;
   // public editProduct: Product;
   // public deleteProduct: Product;
 
@@ -17,15 +25,64 @@ export class AppComponent implements OnInit{
     this.products = [];
   }
 
+
   ngOnInit() {
     this.getProducts();
   }
+
 
   public getProducts(): void {
     this.productService.getProducts().subscribe({
       next: (response: Product[]) => {
         this.products = response;
         console.log(this.products);
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  onFileChange(event: any): void {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      this.img = selectedFile.name;
+      this.imgPreview = URL.createObjectURL(selectedFile);
+    }
+  }
+
+
+  public onAddProduct(addForm: NgForm): void{
+    // @ts-ignore
+    document.getElementById("add-product-form").click();
+    addForm.value.imgSrc = "/img/" +this.img
+    this.productService.addProduct(addForm.value).subscribe({
+      next: (response: Product) => {
+        console.log(response);
+        this.getProducts();
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+  public onUpdateProduct(productId: number, product: Product): void {
+    this.productService.updateProduct(productId, product).subscribe({
+      next: (response: void) => {
+        console.log(response);
+        this.getProducts();
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  public onDeleteEmloyee(productId: number): void {
+    this.productService.deleteProduct(productId).subscribe({
+      next: (response: void) => {
+        console.log(response);
+        this.getProducts();
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
@@ -41,11 +98,9 @@ export class AppComponent implements OnInit{
       button.style.display = 'none';
       button.setAttribute('data-toggle', 'modal');
       if (mode === 'add') {
-        console.log(document.getElementById('addProductModal'))
         button.setAttribute('data-target', '#addProductModal');
       }
       if (mode === 'edit') {
-        console.log("Edit")
         button.setAttribute('data-target', '#editProductModal');
       }
       if (mode === 'delete') {
@@ -53,9 +108,8 @@ export class AppComponent implements OnInit{
       }
       container.appendChild(button);
       button.click();
-    }else {
-      console.log("Błąd")
     }
   }
+
 
 }

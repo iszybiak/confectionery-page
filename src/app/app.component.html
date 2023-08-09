@@ -63,7 +63,6 @@
       </div>
     </div>
   </div>
-</div>
 
 
 
@@ -75,58 +74,149 @@
         <h3 class="modal-title">Dodawanie produktu</h3>
         <button type="button" class="zmdi zmdi-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
       </div>
+      <form class="form" #addForm="ngForm" (ngSubmit)="onAddProduct(addForm)">
       <div class="modal-body">
-        <form class="form" novalidate="">
-          <div class="form-group">
-            <label>Wygląd</label>
-            <button class="btn btn-primary col" type="button">
-              <i class="fa fa-fw fa-camera"></i>
-              <span>Zdjęcie</span>
-            </button>
-          </div>
           <div class="form-group">
             <label>Nazwa</label>
-            <input class="form-control" type="text" name="name" placeholder="Produkt">
+            <input class="form-control" ngModel type="text" name="name"  placeholder="Produkt">
           </div>
           <div class="form-group row">
             <div class="col">
               <label>Cena</label>
-              <input class="form-control" type="number" name="price" step="0.01" placeholder="zł">
+              <input class="form-control" ngModel type="number" name="price"  step="0.01" placeholder="zł">
             </div>
             <div class="col">
               <label>Dostępna ilość</label>
-              <input class="form-control" type="number" name="quantity" placeholder="szt.">
+              <input class="form-control" ngModel type="number" name="quantity" placeholder="szt.">
             </div>
           </div>
           <div class="form-group">
             <label>Informacje dodatkowe</label>
             <div class="custom-controls-stacked px-2">
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="is-no-added-sugar" checked="">
-                <label class="custom-control-label" for="is-no-added-sugar">Bez dodatku cukru</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="is-no-gluten" checked="">
-                <label class="custom-control-label" for="is-no-gluten">Bez glutenu</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="is-vegan" checked="">
-                <label class="custom-control-label" for="is-vegan">Vegan</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="is-keto" checked="">
-                <label class="custom-control-label" for="is-keto">Keto</label>
-              </div>
+              <input type="checkbox" [(ngModel)]="isMelting" class="custom-control-input" id="is-melting" name="melting" >
+              <label class="custom-control-label" for="is-melting">Mrożone</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" [(ngModel)]="isNoGluten" class="custom-control-input" id="is-no-gluten" name="no_gluten" >
+              <label class="custom-control-label" for="is-no-gluten">Bez glutenu</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" [(ngModel)]="isNoSugar" class="custom-control-input" id="is-no-added-sugar" name="no_added_sugar" >
+              <label class="custom-control-label" for="is-no-added-sugar">Bez dodatku cukru</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" [(ngModel)]="isKeto" class="custom-control-input" id="is-keto" name="keto">
+              <label class="custom-control-label" for="is-keto">Keto</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" [(ngModel)]="isVegan" class="custom-control-input" id="is-vegan" name="vegan" >
+              <label class="custom-control-label" for="is-vegan">Vegan</label>
+            </div>
+            <div class="form-group chooseImg">
+              <label class="btn btn-primary col" for="photoInput">
+                <input type="file" (change)="onFileChange($event)" id="photoInput" accept="image/*">
+                <i class="fa fa-fw fa-camera"></i>
+                <span>Zdjęcie</span>
+              </label>
+              <img *ngIf="img" [src]="imgPreview">
+            </div>
             </div>
           </div>
-        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
-        <button type="button" class="btn btn-primary">Zapisz</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="add-product-form">Zamknij</button>
+        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Zapisz</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
 
 
+<--! Edit Module-->
+  <div class="modal " tabindex="-1" id="editProductModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Dodawanie produktu</h3>
+          <button type="button" class="zmdi zmdi-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+        </div>
+        <form class="form" #addForm="ngForm" (ngSubmit)="onAddProduct(addForm)">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Nazwa</label>
+              <input class="form-control" ngModel type="text" name="name"  placeholder="Produkt">
+            </div>
+            <div class="form-group row">
+              <div class="col">
+                <label>Cena</label>
+                <input class="form-control" ngModel type="number" name="price"  step="0.01" placeholder="zł">
+              </div>
+              <div class="col">
+                <label>Dostępna ilość</label>
+                <input class="form-control" ngModel type="number" name="quantity" placeholder="szt.">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Informacje dodatkowe</label>
+              <div class="custom-controls-stacked px-2">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="isMelting" class="custom-control-input" id="edit-is-melting" name="melting" >
+                  <label class="custom-control-label" for="edit-is-melting">Mrożone</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="isNoGluten" class="custom-control-input" id="edit-is-no-gluten" name="no_gluten" >
+                  <label class="custom-control-label" for="edit-is-no-gluten">Bez glutenu</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="isNoSugar" class="custom-control-input" id="edit-is-no-added-sugar" name="no_added_sugar" >
+                  <label class="custom-control-label" for="edit-is-no-added-sugar">Bez dodatku cukru</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="isKeto" class="custom-control-input" id="edit-is-keto" name="keto">
+                  <label class="custom-control-label" for="edit-is-keto">Keto</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" [(ngModel)]="isVegan" class="custom-control-input" id="edit-is-vegan" name="vegan" >
+                  <label class="custom-control-label" for="edit-is-vegan">Vegan</label>
+                </div>
+                <div class="form-group chooseImg">
+                  <label class="btn btn-primary col" for="photoInput">
+                    <input type="file" (change)="onFileChange($event)"  accept="image/*">
+                    <i class="fa fa-fw fa-camera"></i>
+                    <span>Zdjęcie</span>
+                  </label>
+                  <img *ngIf="img" [src]="imgPreview">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Zamknij</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Zapisz</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+<--! Delete Modal-->
+  <div class="modal " tabindex="-1" id="deleteProductModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Usuwanie produktu </h3>
+          <button type="button" class="zmdi zmdi-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+        </div>
+        <div class="modal-body"><h5>Czy napewno chcesz usunąć produkt?</h5></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button type="button" class="btn btn-primary">Usuń</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -757,3 +757,12 @@ body{
   z-index: 1; /* Ustaw z-index na mniejszą wartość niż modal, na przykład 1 */
 }
 
+.btn-primary input[type="file"] {
+  display: none; /* Ukrywamy standardowe wygląd inputa typu "file" */
+}
+
+.chooseImg > img{
+  width: 15%;
+}
+
+
